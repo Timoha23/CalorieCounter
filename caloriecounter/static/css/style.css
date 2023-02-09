@@ -1,0 +1,40 @@
+body {
+    background-color: rgb(233, 233, 233);
+    font-family: monospace;
+}
+
+/* main {
+    display: flex;
+} */
+
+.custom_card {
+    margin: 5% auto;
+    width: 30%;
+}
+
+.inner_card {
+    overflow: auto;
+    background-color: rgb(243, 243, 243);
+    margin: 5px auto;
+    padding: 5%;
+    border: solid 1px;
+    border-radius: 5px;
+    border-color: black;
+    box-shadow: 5px 2px 5px rgb(100, 100, 100);
+}
+
+.title_card {
+    font-size: 25px;
+}
+
+.custom_hr {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.register {
+    width: 60%;
+    
+}
