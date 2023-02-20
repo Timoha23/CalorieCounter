@@ -1,10 +1,11 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
+
 
 app_name = 'calories'
 
 urlpatterns = [
-    path('add_calories/', views.add_calories, name='add_calories'),
-    path('', views.index, name='index')
+    path('add_calories/', views.create_calories, name='create_calories'),
+    path('test/', views.search, name='search'),
+    path('', views.index, name='index'),
 ]
-

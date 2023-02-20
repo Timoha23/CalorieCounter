@@ -6,17 +6,18 @@
 <div class="custom_card">
   <h2 style="text-align: center; margin-bottom: 0px;">Каллорий за сегодня: 1000</h2>
   <p style="text-align: center; margin-bottom: 30px;"></i>(Для вашего веса это норма)</i></p>
+  <div class="w-auto p-3">
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-breakfast">Добавить</button>
+    </div>
+  </div>
+
     <div class="inner_card">
       <div class="row">
         <div class="col">
           <h2 class="title_card">
             Завтрак
           </h2>
-        </div>
-        <div class="col">
-          <div class="float-end">
-            <button type="button" class="btn btn-success">Добавить</button>
-          </div>
         </div>
       </div>
       <hr class="custom_hr"></hr>
@@ -63,11 +64,6 @@
             Обед
           </h2>
         </div>
-        <div class="col">
-          <div class="float-end">
-            <button type="button" class="btn btn-success">Добавить</button>
-          </div>
-        </div>
       </div>
       <hr class="custom_hr"></hr>
       <table class="table">
@@ -109,11 +105,7 @@
             Ужин
           </h2>
         </div>
-        <div class="col">
-          <div class="float-end">
-            <button type="button" class="btn btn-success">Добавить</button>
-          </div>
-        </div>
+        
       </div>
       <hr class="custom_hr"></hr>
       <table class="table">
@@ -156,11 +148,7 @@
             Перекусы
           </h2>
         </div>
-        <div class="col">
-          <div class="float-end">
-            <button type="button" class="btn btn-success">Добавить</button>
-          </div>
-        </div>
+        
       </div>
       <hr class="custom_hr"></hr>
       <table class="table">
@@ -196,4 +184,47 @@
       </table>
     </div>
 </div>
+
+
+<!-- Модальное окно -->
+
+<div class="modal fade" id="modal-breakfast" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Добавить каллории</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'calories:create_calories' %}">
+          {% csrf_token %}
+          {% for field in form %}
+            {% if field.label == 'Type' %}
+            {% else %}           
+              <div class="form-group row my-3 p-3">
+                <label for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                  {% if field.field.required %}                  
+                    <span class="required text-danger" >*</span>
+                  {% endif %}                  
+                </label>
+                {{ field }}
+                {% if field.help_text %}             
+                  <small id="id_text-help" class="form-text text-muted">
+                    {{ field.help_text }}
+                  </small>
+                {% endif %}                  
+              </div>
+            {% endif %}  
+            {% endfor %} 
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
