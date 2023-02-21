@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
 {% block title %} Добавляем каллории {% endblock title %}
 {% block content %}
-
-
+{% comment %}  {% endcomment %}
+<link href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $( function() {
+    var availableProducts = [
+      {% for p in products %}
+          "{{p.name}}",
+      {% endfor %}
+    ];
+    $( "#id_query" ).autocomplete({
+      source: availableProducts,
+      minLength: 2,
+      delay: 500,
+    });
+  } );
+</script>
+{% comment %}  {% endcomment %}
 <div class="custom_card">
-  <h2 style="text-align: center; margin-bottom: 0px;">Каллорий за сегодня: 1000</h2>
+  <h2 style="text-align: center; margin-bottom: 0px;">Каллорий за сегодня: {{ calories_for_user }}</h2>
   <p style="text-align: center; margin-bottom: 30px;"></i>(Для вашего веса это норма)</i></p>
   <div class="w-auto p-3">
     <div class="d-grid gap-2">
@@ -21,41 +38,44 @@
         </div>
       </div>
       <hr class="custom_hr"></hr>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Наименование</th>
-            <th scope="col">Белки</th>
-            <th scope="col">Жиры</th>
-            <th scope="col">Углеводы</th>
-            <th scope="col">Ккал</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>del</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+        {% if breakfast %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Белки</th>
+                <th scope="col">Жиры</th>
+                <th scope="col">Углеводы</th>
+                <th scope="col">Ккал</th>
+                <th scope="col">Граммы</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in breakfast %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ product.product.name }}</td>
+                  <td>{{ product.product.proteins }}</td>
+                  <td>{{ product.product.fats }}</td>
+                  <td>{{ product.product.carbohydrates }}</td>
+                  <td>{{ product.product.calories }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td><a
+                    class="btn btn-light"
+                    href="{% url 'calories:delete_created_calories' product.id %}"
+                    role="button"
+                  >
+                    Удалить
+                  </a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+        <p>Здесь пока что пусто</p>
+        {% endif %}
     </div>
     <div class="inner_card">
       <div class="row">
@@ -66,37 +86,44 @@
         </div>
       </div>
       <hr class="custom_hr"></hr>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Наименование</th>
-            <th scope="col">Белки</th>
-            <th scope="col">Жиры</th>
-            <th scope="col">Углеводы</th>
-            <th scope="col">Ккал</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      {% if lunch %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Белки</th>
+                <th scope="col">Жиры</th>
+                <th scope="col">Углеводы</th>
+                <th scope="col">Ккал</th>
+                <th scope="col">Граммы</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in lunch %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ product.product.name }}</td>
+                  <td>{{ product.product.proteins }}</td>
+                  <td>{{ product.product.fats }}</td>
+                  <td>{{ product.product.carbohydrates }}</td>
+                  <td>{{ product.product.calories }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td><a
+                    class="btn btn-light"
+                    href="{% url 'calories:delete_created_calories' product.id %}"
+                    role="button"
+                  >
+                    Удалить
+                  </a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+        <p>Здесь пока что пусто</p>
+        {% endif %}
     </div>
     <div class="inner_card">
       <div class="row">
@@ -108,37 +135,44 @@
         
       </div>
       <hr class="custom_hr"></hr>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Наименование</th>
-            <th scope="col">Белки</th>
-            <th scope="col">Жиры</th>
-            <th scope="col">Углеводы</th>
-            <th scope="col">Ккал</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      {% if dinner %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Белки</th>
+                <th scope="col">Жиры</th>
+                <th scope="col">Углеводы</th>
+                <th scope="col">Ккал</th>
+                <th scope="col">Граммы</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in dinner %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ product.product.name }}</td>
+                  <td>{{ product.product.proteins }}</td>
+                  <td>{{ product.product.fats }}</td>
+                  <td>{{ product.product.carbohydrates }}</td>
+                  <td>{{ product.product.calories }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td><a
+                    class="btn btn-light"
+                    href="{% url 'calories:delete_created_calories' product.id %}"
+                    role="button"
+                  >
+                    Удалить
+                  </a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+        <p>Здесь пока что пусто</p>
+        {% endif %}
     </div>
 
     <div class="inner_card">
@@ -151,42 +185,52 @@
         
       </div>
       <hr class="custom_hr"></hr>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Наименование</th>
-            <th scope="col">Белки</th>
-            <th scope="col">Жиры</th>
-            <th scope="col">Углеводы</th>
-            <th scope="col">Ккал</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      {% if snack %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Белки</th>
+                <th scope="col">Жиры</th>
+                <th scope="col">Углеводы</th>
+                <th scope="col">Ккал</th>
+                <th scope="col">Граммы</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in snack %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ product.product.name }}</td>
+                  <td>{{ product.product.proteins }}</td>
+                  <td>{{ product.product.fats }}</td>
+                  <td>{{ product.product.carbohydrates }}</td>
+                  <td>{{ product.product.calories }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td><a
+                    class="btn btn-light"
+                    href="{% url 'calories:delete_created_calories' product.id %}"
+                    role="button"
+                  >
+                    Удалить
+                  </a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>Здесь пока что пусто</p>
+        {% endif %}
     </div>
 </div>
 
 
-<!-- Модальное окно -->
+<!-- Модальное окно с добавлением-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  </script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>  
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
 <div class="modal fade" id="modal-breakfast" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -196,7 +240,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
       </div>
       <div class="modal-body">
-        <form method="post" action="{% url 'calories:create_calories' %}">
+        <form method="post" action="{% url 'calories:create_calories' %}">  
           {% csrf_token %}
           {% for field in form %}
             {% if field.label == 'Type' %}
@@ -209,11 +253,11 @@
                   {% endif %}                  
                 </label>
                 {{ field }}
-                {% if field.help_text %}             
+                {% if field.help_text %}       
                   <small id="id_text-help" class="form-text text-muted">
                     {{ field.help_text }}
                   </small>
-                {% endif %}                  
+                {% endif %}             
               </div>
             {% endif %}  
             {% endfor %} 
@@ -226,5 +270,7 @@
     </div>
   </div>
 </div>
+
+
 
 {% endblock content %}

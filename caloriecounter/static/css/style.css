@@ -9,7 +9,7 @@ body {
 
 .custom_card {
     margin: 5% auto;
-    width: 30%;
+    width: 40%;
 }
 
 .inner_card {
@@ -37,4 +37,11 @@ body {
 .register {
     width: 60%;
     
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    max-width: 450px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }

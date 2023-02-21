@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'calories.apps.CaloriesConfig',
     'users.apps.UsersConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'caloriecounter.urls'
@@ -142,3 +144,8 @@ CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'calories:index'
 LOGOUT_REDIRECT_URL = 'calories:index'
+
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
