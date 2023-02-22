@@ -18,3 +18,5 @@ class AddCalorieForm(forms.Form):
             print('ERROR query')
             raise ValidationError('Данного продукта нет в базе')
         return query
+
+

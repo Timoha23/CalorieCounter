@@ -1,6 +1,6 @@
 import datetime
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .forms import AddCalorieForm
@@ -89,8 +89,16 @@ def create_calories(request):
     )
 
 
+@login_required
 def delete_created_calories(request, id):
-    """Удаление созданных каллорий"""
-    object = UserCalorieHistory.objects.get(id=id)
+    """Удаление созданных калорий"""
+    object = get_object_or_404(UserCalorieHistory, id=id)
     object.delete()
     return redirect('calories:create_calories')
+
+
+@login_required
+def remove_calories(request):
+    """Добавление тренировки или иных действий способствующих
+    сжиганию калорий"""
+    return render(request, template_name='calories/remove_calories.html')
