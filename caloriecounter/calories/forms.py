@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import EatType, Products
+from .models import EatType, Products, UserRemoveCalorieHistory
 
 
 class AddCalorieForm(forms.Form):
@@ -20,3 +20,27 @@ class AddCalorieForm(forms.Form):
         return query
 
 
+class RemoveCalorieForm(forms.ModelForm):
+    # def clean_hours(self):
+    #     hours_value = self.cleaned_data.get('hours')
+    #     if hours_value <= 0:
+    #         raise ValidationError('Чаcов должно быть больше 0')
+    #     return hours_value
+
+    class Meta:
+        model = UserRemoveCalorieHistory
+        fields = ('type', 'minutes')
+
+
+class RemoveCalorieCustomForm(forms.ModelForm):
+    calories = forms.IntegerField(min_value=0, max_value=1500)
+
+    # def clean_hours(self):
+    #     hours_value = self.cleaned_data.get('hours')
+    #     if hours_value <= 0:
+    #         raise ValidationError('Чаcов должно быть больше 0')
+    #     return hours_value
+
+    class Meta:
+        model = UserRemoveCalorieHistory
+        fields = ('custom_type', 'minutes', 'calories')

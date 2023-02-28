@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block title %} Убираем каллории {% endblock title %}
+{% block title %} Убираем калории {% endblock title %}
 {% block content %}
 <div class="custom_card">
-  <h2 style="text-align: center; margin-bottom: 30px;">Здесь вы можете убрать каллории</h2>
+  <h2 style="text-align: center; margin-bottom: 30px;">Здесь вы можете добавить свое упражнение</h2>
+  <h3 style="text-align: center; margin-bottom: 30px;">Сожжено калорий за сегодня: {{ calories_for_user }}</h2>
   <div class="inner_card">
     <nav>
       <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
@@ -14,25 +15,109 @@
       <div class="tab-pane fade show active" id="nav-add-from-db" role="tabpanel" aria-labelledby="nav-home-tab">
         <form method="post" action="{% url 'calories:remove_calories' %}">  
           {% csrf_token %}
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-          </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          {% for field in form %}
+            {% if field.label == 'Type' %}
+            {% else %}           
+              <div class="form-group row my-3 p-3">
+                <label for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                  {% if field.field.required %}                  
+                    <span class="required text-danger" >*</span>
+                  {% endif %}             
+                </label>
+                <div class="form-error">{{ field.errors }}</div>
+                {{ field }}
+                {% if field.help_text %}       
+                  <small id="id_text-help" class="form-text text-muted">
+                    {{ field.help_text }}
+                  </small>
+                {% endif %}             
+              </div>
+            {% endif %}  
+            {% endfor %} 
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-light" name='form_with_exercises'>Добавить</button>
+            </div>
         </form>
       </div>
-      <div class="tab-pane fade" id="nav-add-your" role="tabpanel" aria-labelledby="nav-profile-tab">B</div>
+      <div class="tab-pane fade" id="nav-add-your" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <form method="post" action="{% url 'calories:remove_calories' %}">  
+          {% csrf_token %}
+          {% for field in custom_form %}
+            {% if field.label == 'Type' %}
+            {% else %}           
+              <div class="form-group row my-3 p-3">
+                <label for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                  {% if field.field.required %}                  
+                    <span class="required text-danger" >*</span>
+                  {% endif %}                  
+                </label>
+                <div class="form-error">{{ field.errors }}</div>
+                {{ field }}
+                {% if field.help_text %}       
+                  <small id="id_text-help" class="form-text text-muted">
+                    {{ field.help_text }}
+                  </small>
+                {% endif %}             
+              </div>
+            {% endif %}  
+            {% endfor %} 
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-light" name='custom_user_form'>Добавить</button>
+            </div>
+        </form>
+      </div>
     </div>
 
+  </div>
+  <div class="inner_card">
+    <div class="row">
+      <div class="col">
+        <h2 class="title_card">
+          История за сегодня
+        </h2>
+      </div>
+    </div>
+    <hr class="custom_hr"></hr>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Тип упражнения</th>
+              <th scope="col">Количество минут</th>
+              <th scope="col">Ккал сожжено</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in history %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                {% if obj.type is not None %}
+                  <td>{{ obj.type.name }}</td>
+                  <td>{{ obj.minutes }}</td>
+                  <td>{{ obj.calories }}</td>
+                {% else %}
+                  <td>{{ obj.custom_type }}</td>
+                  <td>{{ obj.minutes }}</td>
+                  <td>{{ obj.calories }}</td>
+                {% endif %}
+                
+                {% comment %} <td><a
+                  class="btn btn-light"
+                  href="{% url 'calories:delete_created_calories' product.id %}"
+                  role="button"
+                >
+                  Удалить
+                </a></td> {% endcomment %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% comment %} {% else %}
+      <p>Здесь пока что пусто</p>
+      {% endif %} {% endcomment %}
   </div>
 </div>
 {% endblock %}
