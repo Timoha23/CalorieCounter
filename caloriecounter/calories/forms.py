@@ -14,7 +14,7 @@ class AddCalorieForm(forms.Form):
 
     def clean_query(self):
         query = self.cleaned_data.get('query')
-        if not Products.objects.filter(name__icontains=query).exists():
+        if not Products.objects.filter(name=query).exists():
             print('ERROR query')
             raise ValidationError('Данного продукта нет в базе')
         return query

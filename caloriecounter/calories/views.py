@@ -111,10 +111,18 @@ def remove_calories(request):
     form = RemoveCalorieForm(request.POST or None)
     custom_form = RemoveCalorieCustomForm(request.POST or None)
     history = UserRemoveCalorieHistory.objects.select_related(
-        'type').filter(pub_date__date=datetime.date.today())[:10]
+        'type').filter(pub_date__date=datetime.date.today()).order_by('-pub_date')[:10]
     calories_for_user = 0
     for el in history:
         calories_for_user += el.calories
+
+    context = {
+        'form': form,
+        'custom_form': custom_form,
+        'history': history,
+        'calories_for_user': calories_for_user,
+        'history_exists': history.exists(),
+    }
 
     if request.method == 'POST':
 
@@ -151,24 +159,19 @@ def remove_calories(request):
                 form.errors.clear()
             return render(
                 request,
-                'calories/remove_calories.html',
-                {
-                    'form': form,
-                    'custom_form': custom_form,
-                    'history': history,
-                    'calories_for_user': calories_for_user,
-                },
+                context=context,
+                template_name='calories/remove_calories.html',
             )
-
-    context = {
-        'form': form,
-        'custom_form': custom_form,
-        'history': history,
-        'calories_for_user': calories_for_user,
-    }
 
     return render(
         request,
         context=context,
         template_name='calories/remove_calories.html'
     )
+
+
+@login_required
+def delete_removed_calories(request, id):
+    object = get_object_or_404(UserRemoveCalorieHistory, id=id)
+    object.delete()
+    return redirect('calories:remove_calories')

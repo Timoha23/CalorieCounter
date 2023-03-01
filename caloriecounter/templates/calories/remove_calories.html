@@ -2,7 +2,7 @@
 {% block title %} Убираем калории {% endblock title %}
 {% block content %}
 <div class="custom_card">
-  <h2 style="text-align: center; margin-bottom: 30px;">Здесь вы можете добавить свое упражнение</h2>
+  <h2 style="text-align: center; margin-bottom: 30px;">Здесь вы можете добавить упражнение</h2>
   <h3 style="text-align: center; margin-bottom: 30px;">Сожжено калорий за сегодня: {{ calories_for_user }}</h2>
   <div class="inner_card">
     <nav>
@@ -80,6 +80,7 @@
       </div>
     </div>
     <hr class="custom_hr"></hr>
+      {% if history_exists %}
         <table class="table">
           <thead>
             <tr>
@@ -103,21 +104,20 @@
                   <td>{{ obj.minutes }}</td>
                   <td>{{ obj.calories }}</td>
                 {% endif %}
-                
-                {% comment %} <td><a
-                  class="btn btn-light"
-                  href="{% url 'calories:delete_created_calories' product.id %}"
-                  role="button"
-                >
-                  Удалить
-                </a></td> {% endcomment %}
+                  <td><a
+                    class="btn btn-light"
+                    href="{% url 'calories:delete_removed_calories' obj.id %}"
+                    role="button"
+                  >
+                    Удалить
+                </a></td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
-      {% comment %} {% else %}
-      <p>Здесь пока что пусто</p>
-      {% endif %} {% endcomment %}
+      {% else %}
+        <p>Здесь пока что пусто</p>
+      {% endif %}
   </div>
 </div>
 {% endblock %}

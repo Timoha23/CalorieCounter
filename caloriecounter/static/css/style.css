@@ -45,3 +45,17 @@ body {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+p.profile-add {
+    text-align: center;
+    margin-top: 20px;
+    color: rgb(14, 90, 14);
+    font-size: 20px;
+}
+
+p.profile-remove {
+    text-align: center;
+    margin-top: auto;
+    color: rgb(131, 18, 18);
+    font-size: 20px;
+}
