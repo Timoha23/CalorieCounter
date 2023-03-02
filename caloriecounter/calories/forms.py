@@ -21,11 +21,6 @@ class AddCalorieForm(forms.Form):
 
 
 class RemoveCalorieForm(forms.ModelForm):
-    # def clean_hours(self):
-    #     hours_value = self.cleaned_data.get('hours')
-    #     if hours_value <= 0:
-    #         raise ValidationError('Чаcов должно быть больше 0')
-    #     return hours_value
 
     class Meta:
         model = UserRemoveCalorieHistory
@@ -34,12 +29,6 @@ class RemoveCalorieForm(forms.ModelForm):
 
 class RemoveCalorieCustomForm(forms.ModelForm):
     calories = forms.IntegerField(min_value=0, max_value=1500)
-
-    # def clean_hours(self):
-    #     hours_value = self.cleaned_data.get('hours')
-    #     if hours_value <= 0:
-    #         raise ValidationError('Чаcов должно быть больше 0')
-    #     return hours_value
 
     class Meta:
         model = UserRemoveCalorieHistory
